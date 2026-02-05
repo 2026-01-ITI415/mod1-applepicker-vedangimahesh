@@ -6,26 +6,42 @@ public class GameManager : MonoBehaviour
     public int lives = 3;
     public TextMeshProUGUI livesText;
 
+    private AppleTree appleTree;
+
     void Start()
     {
-        UpdateUI();
+        appleTree = FindFirstObjectByType<AppleTree>();
+        UpdateLivesText();
     }
 
     public void LoseLife()
     {
         lives--;
-        UpdateUI();
+        UpdateLivesText();
 
         if (lives <= 0)
         {
-            Debug.Log("GAME OVER");
-            Time.timeScale = 0f; // freeze game
+            GameOver();
         }
     }
 
-    void UpdateUI()
+    void UpdateLivesText()
     {
         if (livesText != null)
+        {
             livesText.text = "Lives: " + lives;
+        }
+    }
+
+    void GameOver()
+    {
+        Debug.Log("GAME OVER");
+
+        if (appleTree != null)
+        {
+            appleTree.StopSpawning();
+        }
+
+        Time.timeScale = 0f;
     }
 }

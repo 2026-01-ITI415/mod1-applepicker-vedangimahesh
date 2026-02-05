@@ -7,6 +7,8 @@ public class AppleTree : MonoBehaviour
     public float xRange = 8f;
     public float ySpawn = 10f;
 
+    private bool gameOver = false;
+
     void Start()
     {
         InvokeRepeating(nameof(DropApple), 1f, spawnRate);
@@ -14,6 +16,8 @@ public class AppleTree : MonoBehaviour
 
     void DropApple()
     {
+        if (gameOver) return;
+
         Vector3 pos = new Vector3(
             Random.Range(-xRange, xRange),
             ySpawn,
@@ -21,5 +25,11 @@ public class AppleTree : MonoBehaviour
         );
 
         Instantiate(applePrefab, pos, Quaternion.identity);
+    }
+
+    public void StopSpawning()
+    {
+        gameOver = true;
+        CancelInvoke(nameof(DropApple));
     }
 }
